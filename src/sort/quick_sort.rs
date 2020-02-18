@@ -1,6 +1,6 @@
 use rand::Rng;
 
-pub fn quick_sort<T: PartialOrd>(v: &mut Vec<T>) -> &Vec<T> {
+pub fn quick_sort_basic<T: PartialOrd>(v: &mut Vec<T>) -> &Vec<T> {
     shuffle(v);
     sort(v, 0, v.len()-1);
     v
@@ -26,8 +26,8 @@ fn sort<T: PartialOrd>(v: &mut Vec<T>, lo: usize, hi: usize) {
     sort(v, mid+1, hi);
 }
 
-// sort2 implements quick sort using 3-way partitioning 
-// fn sort2<T: PartialOrd>(v: &mut Vec<T>, lo: usize, hi: usize) {
+// implements quick sort using 3-way partitioning 
+// fn sort_with_3way_partition<T: PartialOrd>(v: &mut Vec<T>, lo: usize, hi: usize) {
 //     // TODO
 // }
 
