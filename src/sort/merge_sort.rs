@@ -1,5 +1,9 @@
 pub fn merge_sort_basic<T: PartialOrd + Copy>(v: &mut Vec<T>) -> &Vec<T> {
     let mut aux = Vec::with_capacity(v.len());
+    for &item in v.iter() {
+        aux.push(item);
+    }
+
     sort(v, &mut aux, 0, v.len()-1);
     v
 }

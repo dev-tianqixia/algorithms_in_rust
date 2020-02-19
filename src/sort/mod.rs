@@ -15,14 +15,6 @@ mod tests {
     }
 
     #[test]
-    fn test_quick_sort() {
-        assert_sorted(quick_sort_basic(&mut vec![1]));
-        assert_sorted(quick_sort_basic(&mut vec![1,1,1,1,1]));
-        assert_sorted(quick_sort_basic(&mut vec![4,2,6,7,1,10]));
-        assert_sorted(quick_sort_basic(&mut vec!["w", "h", "p", "a", "x"]));
-    }
-
-    #[test]
     fn test_insertion_sort() {
         assert_sorted(insertion_sort(&mut vec![1]));
         assert_sorted(insertion_sort(&mut vec![1,1,1,1,1]));
@@ -33,5 +25,16 @@ mod tests {
     #[test]
     fn test_merge_sort() {
         assert_sorted(merge_sort_basic(&mut vec![1]));
+        assert_sorted(merge_sort_basic(&mut vec![1,1,1,1,1]));
+        assert_sorted(merge_sort_basic(&mut vec![4,2,6,7,1,10]));
+        assert_sorted(merge_sort_basic(&mut vec!["w", "h", "p", "a", "x"]));
+    }
+
+    #[test]
+    fn test_quick_sort() {
+        assert_sorted(quick_sort_basic(&mut vec![1]));
+        assert_sorted(quick_sort_basic(&mut vec![1,1,1,1,1]));
+        assert_sorted(quick_sort_basic(&mut vec![4,2,6,7,1,10]));
+        assert_sorted(quick_sort_basic(&mut vec!["w", "h", "p", "a", "x"]));
     }
 }
