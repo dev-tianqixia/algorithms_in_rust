@@ -16,3 +16,27 @@ pub fn insertion_sort<T: PartialOrd>(v: &mut Vec<T>) -> &Vec<T> {
 
     v
 }
+
+pub fn shell_sort<T: PartialOrd>(v: &mut Vec<T>) -> &Vec<T> {
+    let mut h = 1;
+    while h < v.len()/3 {
+        h = 3*h+1;
+    }
+
+    // when h == 1, shell sort becomes insertion sort
+    while h >= 1 {
+        for i in h..v.len() {
+            for j in (h..=i).rev().step_by(h) {
+                if v[j] < v[j-h] {
+                    v.swap(j, j-h);
+                } else {
+                    break;
+                }
+            }
+        }
+
+        h /= 3
+    }
+
+    v
+}
