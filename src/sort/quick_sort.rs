@@ -65,7 +65,14 @@ fn sort_3way_partition<T: PartialOrd>(v: &mut Vec<T>, lo: usize, hi: usize) {
     sort_3way_partition(v, gt+1, hi);
 }
 
-// invariant: 
+// while the loop is running:
+// v[lo] is the pivot
+// v[lo+1..i]  - less than or equal to pivot;
+// v[i..=j]    - to be examiend;
+// v[j+1..=hi] - greater than or equal to pivot;
+//
+// when the loop finished running:
+// v[i] >= pivot, v[j] <= pivot -> exchange v[j] with pivot
 fn partition<T: PartialOrd>(v: &mut Vec<T>, lo: usize, hi: usize) -> usize {
     // let pivot = v[lo];
     let mut i = lo+1;

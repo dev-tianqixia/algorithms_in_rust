@@ -17,7 +17,12 @@ pub fn insertion_sort<T: PartialOrd>(v: &mut Vec<T>) -> &Vec<T> {
     v
 }
 
+// rearrange and produce "partially" sorted array that can eventually be sorted by insertion sort
 pub fn shell_sort<T: PartialOrd>(v: &mut Vec<T>) -> &Vec<T> {
+    if v.len() <= 1 {
+        return v;
+    }
+
     let mut h = 1;
     while h < v.len()/3 {
         h = 3*h+1;
