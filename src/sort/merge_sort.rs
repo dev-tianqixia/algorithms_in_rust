@@ -14,7 +14,7 @@ pub fn merge_sort_bottom_up<T: PartialOrd + Copy>(v: &mut Vec<T>) -> &Vec<T> {
     // do not use size <= v.len()/2 as the loop termination condition;
     // size < v.len() works for both odd/even length.
     while size < v.len() {
-        // (v.len()-1 - lo)+1 > size -> lo < v.len()
+        // (v.len()-1 - lo)+1 > size -> lo < v.len() - size
         // v.len()-1: last index
         // lo: current lower bound
         // if the length from lo to the last index is less than or equal to size, a merge won't be necessary
