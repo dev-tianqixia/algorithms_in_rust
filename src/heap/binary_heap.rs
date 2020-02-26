@@ -7,10 +7,18 @@ struct Heap<T: PartialOrd + Copy> {
 }
 
 impl<T: PartialOrd + Copy> Heap<T> {
-    fn new(v: Vec<T>) -> Heap<T> {
+    fn new() -> Heap<T> {
         Heap {
-            v: v
+            v: Vec::new(),
         }
+    }
+
+    fn from(v: Vec<T>) -> Heap<T> {
+        let mut heap = Heap {
+            v,
+        };
+        heap.fix();
+        heap
     }
 }
 
@@ -23,9 +31,8 @@ impl<T: PartialOrd + Copy> Heap<T> {
         let mut i = index;
         // while v[i] is not a leave
         while i < self.v.len()/2 {
-            // left child
-            let left = i*2+1;
-            let right = i*2+2;
+            let left = i*2+1; // left child
+            let right = i*2+2; // right child
             let j = if right < self.v.len() && self.v[right] > self.v[left] {
                 right
             } else {
@@ -52,12 +59,19 @@ impl<T: PartialOrd + Copy> Heap<T> {
             i = (i-1)/2;
         }
     }
+
+    // fix the heap to retain the heap invariant
+    fn fix(&mut self) {
+        for i in (0..self.v.len()/2).rev() {
+            self.sink(i);
+        }
+    }
 }
 
 // public methods
 impl<T: PartialOrd + Copy> Heap<T> {
     // heap operations normally make a simple modification that violates the heap invariant,
-    // then traveling through and modify the heap as required to regain the heap invariant.
+    // then traveling through and modify the heap as required to retain the heap invariant.
 
     pub fn insert(&mut self, target: T) {
         self.v.push(target);
@@ -71,7 +85,7 @@ impl<T: PartialOrd + Copy> Heap<T> {
             let i = self.v.len()-1;
             self.v.swap(0, i);
 
-            let res = Some(self.v[i]);
+            let res = Some(self.v.pop().unwrap());
             self.sink(0);
 
             res
@@ -84,11 +98,19 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_heap_operations() {
-        let mut h = Heap::new(vec![1]);
+    fn test_basic_heap_operations() {
+        let mut h = Heap::from(vec![3,7,6,2,1,5,4,8]);
+
+        for i in (1..=8).rev() {
+            match h.remove() {
+                Some(res) => assert!(res == i),
+                None => assert!(1 == 0),
+            }
+        }
+
         match h.remove() {
-            Some(res) => assert!(res == 1),
-            None => assert!(1 == 0),
+            Some(_) => assert!(0 == 1),
+            None => (),
         }
     }
 }
