@@ -98,19 +98,48 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_basic_heap_operations() {
+    fn test_remove() {
         let mut h = Heap::from(vec![3,7,6,2,1,5,4,8]);
 
         for i in (1..=8).rev() {
-            match h.remove() {
-                Some(res) => assert!(res == i),
-                None => assert!(1 == 0),
-            }
+            assert_eq!(h.remove().unwrap(), i);
+        }
+        assert_eq!(h.remove(), None);
+        assert_eq!(h.remove(), None);
+    }
+
+    #[test]
+    fn test_insert() {
+        let mut h = Heap::from(vec![3,1,2]);
+        assert_eq!(h.remove().unwrap(), 3);
+
+        h.insert(7);
+        h.insert(5);
+        h.insert(0);
+
+        assert_eq!(h.remove().unwrap(), 7);
+        assert_eq!(h.remove().unwrap(), 5);
+        assert_eq!(h.remove().unwrap(), 2);
+
+        h.insert(10);
+        h.insert(-1);
+
+        assert_eq!(h.remove().unwrap(), 10);
+        assert_eq!(h.remove().unwrap(), 1);
+        assert_eq!(h.remove().unwrap(), 0);
+        assert_eq!(h.remove().unwrap(), -1);
+        assert_eq!(h.remove(), None);
+    }
+
+    #[test]
+    fn test_duplicates() {
+        let mut h = Heap::new();
+        for _ in 0..9 {
+            h.insert(0);
         }
 
-        match h.remove() {
-            Some(_) => assert!(0 == 1),
-            None => (),
+        for _ in 0..9 {
+            assert_eq!(h.remove().unwrap(), 0);
         }
     }
 }
