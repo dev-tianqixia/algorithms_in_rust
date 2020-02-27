@@ -9,7 +9,7 @@ pub fn insertion_sort<T: PartialOrd>(v: &mut Vec<T>) -> &Vec<T> {
             if v[j] < v[j-1] {
                 v.swap(j, j-1);
             } else {
-                break
+                break;
             }
         }
     }

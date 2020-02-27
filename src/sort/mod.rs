@@ -1,3 +1,4 @@
+pub mod heap_sort;
 pub mod insertion_sort;
 pub mod merge_sort;
 pub mod quick_sort;
@@ -6,6 +7,7 @@ pub mod quick_sort;
 mod tests {
     use rand::Rng;
 
+    use super::heap_sort::heap_sort;
     use super::insertion_sort::insertion_sort;
     use super::insertion_sort::shell_sort;
     use super::merge_sort::merge_sort_top_down;
@@ -28,6 +30,15 @@ mod tests {
         for i in 0..v.len()-1 {
             assert!(v[i] <= v[i+1]);
         }
+    }
+
+    #[test]
+    fn test_heap_sort() {
+        assert_sorted(heap_sort(&mut vec![1]));
+        assert_sorted(heap_sort(&mut vec![1,1,1,1,1]));
+        assert_sorted(heap_sort(&mut vec![4,2,6,7,1,10]));
+        assert_sorted(heap_sort(&mut vec!["w", "h", "p", "a", "x"]));
+        assert_sorted(heap_sort(&mut generate_random_large(10000)));
     }
 
     #[test]

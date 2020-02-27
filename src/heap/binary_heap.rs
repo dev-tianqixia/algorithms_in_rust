@@ -2,7 +2,7 @@
 // parent of node at index k: (k-1)/2
 // children of node at index k: 2*k+1, 2*k+2
 // leaves: [n/2..n], where n == v.len()
-struct Heap<T: PartialOrd + Copy> {
+pub struct Heap<T: PartialOrd + Copy> {
     v: Vec<T>
 }
 
