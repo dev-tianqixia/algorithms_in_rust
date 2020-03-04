@@ -7,13 +7,13 @@ pub struct Heap<T: PartialOrd + Copy> {
 }
 
 impl<T: PartialOrd + Copy> Heap<T> {
-    fn new() -> Heap<T> {
+    pub fn new() -> Heap<T> {
         Heap {
             v: Vec::new(),
         }
     }
 
-    fn from(v: Vec<T>) -> Heap<T> {
+    pub fn from(v: Vec<T>) -> Heap<T> {
         let mut heap = Heap {
             v,
         };
@@ -92,6 +92,10 @@ impl<T: PartialOrd + Copy> Heap<T> {
         }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// tests
+////////////////////////////////////////////////////////////////////////////////
 
 #[cfg(test)]
 mod tests {
