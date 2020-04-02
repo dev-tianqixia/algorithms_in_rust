@@ -124,6 +124,17 @@ fn delete<T: Ord+Copy>(node: Option<Box<Node<T>>>, target: T) -> Option<Box<Node
     }
 }
 
+
+// fn rank<T: Ord + Copy>(node: &Option<Box<Node<T>>>, target: T) -> usize {
+//     if let Some(ref node_box) = node {
+//         match node_box.data.cmp(&target) {
+//             Less => 
+//         }
+//     } else {
+//         0
+//     }
+// }
+
 impl<T: Ord + Copy> Node<T> {
     fn new(data: T) -> Self {
         Self {
@@ -289,7 +300,7 @@ impl<'a, T: Ord + Copy> Iter<'a, T> {
             Some(ref node_box) => {
                 self.push_left(node_box);
             },
-            None => (),
+            None => (),          
         }
     }
 }

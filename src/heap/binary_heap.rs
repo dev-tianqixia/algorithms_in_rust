@@ -48,7 +48,7 @@ impl<T: PartialOrd + Copy> Heap<T> {
         }
     }
 
-    // swim implements bottom-up reheapify.
+    // swim implements bottom-up heapify.
     // swim is used when heap invariant is violated because a node becomes:
     //     larger than its parent(for max heap);
     //     smaller than its parent(for min heap).
