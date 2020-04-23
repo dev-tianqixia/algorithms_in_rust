@@ -8,7 +8,7 @@
 use rand::Rng;
 use rand::distributions::{Distribution, Standard};
 use std::cmp::Ordering::{Less, Greater, Equal};
-// use std::mem::swap;
+use std::mem::swap;
 
 struct Node<T> {
     key: T,
@@ -147,41 +147,41 @@ fn union<T>(v1: Vertex<T>, v2: Vertex<T>) -> Vertex<T> where T: Ord {
     }
 }
 
-// fn get_priority<T>(v: &Vertex<T>) -> u64 {
-//     if let Some(ref n) = v {
-//         n.priority
-//     } else {
-//         0
-//     }
-// }
+fn get_priority<T>(v: &Vertex<T>) -> u64 {
+    if let Some(ref n) = v {
+        n.priority
+    } else {
+        0
+    }
+}
 
-// fn heapify<T>(v: &mut Vertex<T>) {
-//     if let Some(ref mut n) = v {
-//         let mut max = &mut n.left;
-//         if get_priority(max) < get_priority(&n.right) {
-//             max = &mut n.right;
-//         }
-//         if get_priority(max) > get_priority(v) {
-//             swap(&mut v.as_mut().unwrap().priority, &mut max.as_mut().unwrap().priority);
-//             heapify(max);
-//         }
-//     }
-// }
+fn heapify<T>(v: &mut Vertex<T>) {
+    if let Some(ref mut n) = v {
+        let max = match get_priority(&n.left).cmp(&get_priority(&n.right)) {
+            Less => &mut n.right,
+            Greater | Equal => &mut n.left,
+        };
+        if get_priority(max) > n.priority {
+            swap(&mut n.priority, &mut max.as_mut().unwrap().priority);
+            heapify(max);
+        }
+    }
+}
 
-// fn build<T>(source: &[T]) -> Vertex<T> where T: Ord + Copy {
-//     if !source.is_empty() {
-//         let mid = source.len()/2;
-//         let mut n = Node::new(source[mid]);
-//         n.left = build(&source[0..mid]);
-//         n.right = build(&source[mid..source.len()]);
+fn build<T>(source: &[T]) -> Vertex<T> where T: Ord + Copy {
+    if !source.is_empty() {
+        let mid = source.len()/2;
+        let mut n = Node::new(source[mid]);
+        n.left = build(&source[0..mid]);
+        n.right = build(&source[mid+1..source.len()]);
 
-//         let mut v = Some(Box::new(n));
-//         heapify(&mut v);
-//         v
-//     } else {
-//         None
-//     }
-// }
+        let mut v = Some(Box::new(n));
+        heapify(&mut v);
+        v
+    } else {
+        None
+    }
+}
 
 fn generate_random_priority<T>() -> T where Standard: Distribution<T> {
     rand::thread_rng().gen()
@@ -225,14 +225,14 @@ impl<T> Treap<T> where T: Ord {
     }
 }
 
-// impl<T> Treap<T> where T: Ord + Copy {    
-//     // construct a treap from sorted slice of T
-//     pub fn from(source: &[T]) -> Self {
-//         Treap {
-//             root: build(source),
-//         }
-//     }
-// }
+impl<T> Treap<T> where T: Ord + Copy {    
+    // construct a treap from sorted slice of T
+    pub fn from(source: &[T]) -> Self {
+        Treap {
+            root: build(source),
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -279,6 +279,12 @@ mod tests {
     }
 
     #[test]
+    fn test_from() {
+        let t = Treap::from(&vec![1,2,3,4,5,6,7,8,9]);
+        assert!(treap_assert(&t));
+    }
+
+    #[test]
     fn test_treap_insertion() {
         let mut t = Treap::new();
         for i in 0..1000 {
@@ -300,5 +306,13 @@ mod tests {
         t = t.delete(5);
         assert!(treap_assert(&t));
         assert_eq!(t.size(), 2);
+
+        t = t.delete(3);
+        assert!(treap_assert(&t));
+        assert_eq!(t.size(), 2);
+
+        t = t.delete(10).delete(1);
+        assert!(treap_assert(&t));
+        assert_eq!(t.size(), 0);
     }
 }
