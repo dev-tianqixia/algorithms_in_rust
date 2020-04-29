@@ -36,6 +36,9 @@ fn update_size<T>(v: Vertex<T>) -> Vertex<T> {
     }
 }
 
+// split v into left part and right part, so that:
+// all elements in the left part has key less than v.
+// all elements in the right part has key greater than or equal to v.
 fn split<T>(v: Vertex<T>, target: &T) -> (Vertex<T>, Vertex<T>) where T: Ord {
     if let Some(mut node) = v {
         match target.cmp(&node.key) {
@@ -157,11 +160,11 @@ fn get_priority<T>(v: &Vertex<T>) -> u64 {
 
 fn heapify<T>(v: &mut Vertex<T>) {
     if let Some(ref mut n) = v {
-        let max = match get_priority(&n.left).cmp(&get_priority(&n.right)) {
-            Less => &mut n.right,
-            Greater | Equal => &mut n.left,
-        };
-        if get_priority(max) > n.priority {
+        let mut max = &mut n.left;
+        if get_priority(max) < get_priority(&n.right) {
+            max = &mut n.right;
+        }
+        if n.priority < get_priority(max){
             swap(&mut n.priority, &mut max.as_mut().unwrap().priority);
             heapify(max);
         }
@@ -172,8 +175,10 @@ fn build<T>(source: &[T]) -> Vertex<T> where T: Ord + Copy {
     if !source.is_empty() {
         let mid = source.len()/2;
         let mut n = Node::new(source[mid]);
+
         n.left = build(&source[0..mid]);
         n.right = build(&source[mid+1..source.len()]);
+        n.size = size(&n.left) + 1 + size(&n.right);
 
         let mut v = Some(Box::new(n));
         heapify(&mut v);
@@ -282,6 +287,7 @@ mod tests {
     fn test_from() {
         let t = Treap::from(&vec![1,2,3,4,5,6,7,8,9]);
         assert!(treap_assert(&t));
+        assert_eq!(t.size(), 9);
     }
 
     #[test]
